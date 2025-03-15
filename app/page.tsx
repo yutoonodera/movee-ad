@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // useRouterをインポート
 import { Typography, Card, Modal, Button } from "antd";
 import { CoffeeOutlined, HomeOutlined } from "@ant-design/icons";
-import Link from "next/link";
 import './globals.css';
 
 const { Paragraph } = Typography;
@@ -14,11 +13,35 @@ export default function Home() {
   const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
   const [loaded, setLoaded] = useState(false);
   const [activeButton, setActiveButton] = useState("all");
+  const [notionData, setNotionData] = useState<{ title: string; link: string }[]>([]);
 
   const router = useRouter(); // useRouterフックを使う
 
   useEffect(() => {
     setLoaded(true);
+
+    // APIルート経由でNotionデータを取得
+    const fetchNotionData = async () => {
+      try {
+        const response = await fetch("/api/notion", { method: "POST" });
+        if (!response.ok) throw new Error("Failed to fetch Notion data");
+
+        const data = await response.json();
+        console.log("Fetched Notion Data:", data);
+
+        // Notion APIのレスポンスからタイトルを取得
+        const extractedData = data.results.map((item: any) => ({
+          title: item.properties.Name.title[0]?.text?.content || "無題",
+          link: `/details/${item.id}`, // 仮のリンク設定
+        }));
+
+        setNotionData(extractedData);
+      } catch (error) {
+        console.error("Notion APIの取得エラー:", error);
+      }
+    };
+
+    fetchNotionData();
   }, []);
 
   const openModal = (title: string, text: string, link: string) => {
@@ -51,43 +74,22 @@ export default function Home() {
 
       {/* カードリスト */}
       <div className="grid text-center lg:max-w-5xl lg:w-full lg:grid-cols-3 lg:text-left gap-4">
-        {/* カード1 (直接リンク) */}
-        <Card
-          title={<span className="block text-sm whitespace-normal overflow-hidden text-ellipsis">倒産危機なのかもしれないソニーの２０２４年度決算の分析</span>}
-          hoverable
-          className="border border-gray-300 dark:border-neutral-700 flex flex-col items-center"
-          onClick={() => openModal(
-            "倒産危機なのかもしれないソニーの２０２４年度決算の分析",
-            "ソニーの2024年度決算の詳細な分析。売上・利益・市場動向について詳しく解説。",
-            "/details/sony2024" // 内部リンクをセット
-          )}
-          style={{ width: "100%" }}
-        >
-          <div className="flex justify-center items-center h-10">
-            <CoffeeOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
-          </div>
-          <div className="flex justify-center items-center">onody</div>
-          <div className="flex justify-center items-center">3時間前</div>
-        </Card>
-
-        {/* カード2 (モーダル表示) */}
-        <Card
-          title={<span className="block text-sm whitespace-normal overflow-hidden text-ellipsis">倒産危機なのかもしれないソニーの２０２４年度決算の分析</span>}
-          hoverable
-          className="border border-gray-300 dark:border-neutral-700 flex flex-col items-center"
-          onClick={() => openModal(
-            "倒産危機なのかもしれないソニーの２０２４年度決算の分析",
-            "ソニーの2024年度決算の詳細な分析。売上・利益・市場動向について詳しく解説。",
-            "/details/sony2024" // 内部リンクをセット
-          )}
-          style={{ width: "100%" }}
-        >
-          <div className="flex justify-center items-center h-10">
-            <CoffeeOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
-          </div>
-          <div className="flex justify-center items-center">onody</div>
-          <div className="flex justify-center items-center">3時間前</div>
-        </Card>
+        {notionData.map((item, index) => (
+          <Card
+            key={index}
+            title={<span className="block text-sm whitespace-normal overflow-hidden text-ellipsis">{item.title}</span>}
+            hoverable
+            className="border border-gray-300 dark:border-neutral-700 flex flex-col items-center"
+            onClick={() => openModal(item.title, "ここにはNotionのテキストが入る。", item.link)}
+            style={{ width: "100%" }}
+          >
+            <div className="flex justify-center items-center h-10">
+              <CoffeeOutlined style={{ fontSize: "48px", color: "#1890ff" }} />
+            </div>
+            <div className="flex justify-center items-center">onody</div>
+            <div className="flex justify-center items-center">3時間前</div>
+          </Card>
+        ))}
       </div>
 
       {/* モーダル */}
@@ -97,7 +99,7 @@ export default function Home() {
         onCancel={() => setIsModalVisible(false)}
         footer={[
           <Button key="close" onClick={() => setIsModalVisible(false)}>閉じる</Button>,
-          <Button key="link" type="primary" onClick={handleNavigate}>詳細を見る</Button>
+          <Button key="link" type="primary" onClick={handleNavigate}>詳細を見る</Button>,
         ]}
       >
         <Paragraph>{modalContent.text}</Paragraph>
