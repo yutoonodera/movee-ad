@@ -1,46 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import useSWR from "swr"; // SWRライブラリをインポート
 import { useRouter, useParams } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
 import ModalComponent from "../../components/ModalComponent";
 import "../.././globals.css";
+import { useEffect, useState } from "react";
 
 const { Title, Paragraph } = Typography;
+
+// APIフェッチ用の関数を定義
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function CombinedPage() {
   const { id } = useParams(); // 現在表示している記事のIDを取得
   const router = useRouter();
 
-  const [detailsLoading, setDetailsLoading] = useState(true);
-  const [detailsError, setDetailsError] = useState<string | null>(null);
-  const [notionDetails, setNotionDetails] = useState<any>(null);
+  // SWRを使ってデータをフェッチ＆キャッシュ
+  const { data: notionDetails, error, isLoading } = useSWR(
+    id ? `/api/notionDetails?id=${id}` : null,
+    fetcher
+  );
+
   const [homeNotionData, setHomeNotionData] = useState<{ title: string; link: string }[]>([]);
   const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // 詳細データを取得
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (!id) return;
-
-      try {
-        const response = await fetch(`/api/notionDetails?id=${id}`);
-        if (!response.ok) throw new Error("Failed to fetch Notion details");
-
-        const data = await response.json();
-        setNotionDetails(data);
-      } catch (err) {
-        setDetailsError("データの取得に失敗しました");
-        console.error("Error fetching details:", err);
-      } finally {
-        setDetailsLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [id]);
 
   // カードリストデータを取得
   useEffect(() => {
@@ -51,7 +36,7 @@ export default function CombinedPage() {
 
         const data = await response.json();
         const extractedData = data.results.map((item: any) => ({
-          title: item.properties.Name.title[0]?.text?.content || "無題",
+          title: item.properties.Name?.title[0]?.text?.content || "無題",
           link: `/details/${item.id}`,
         }));
 
@@ -74,53 +59,58 @@ export default function CombinedPage() {
     router.push(modalContent.link);
   };
 
-  if (detailsLoading) return <Spin size="large" />;
-  if (detailsError) return <Alert message={detailsError} type="error" showIcon />;
+  if (isLoading) return <Spin size="large" />;
+  if (error) return <Alert message="データの取得に失敗しました" type="error" showIcon />;
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
-      {/* DetailsPage の内容 */}
+      {/* タイトルの表示 */}
       <section className="mb-8">
-        <Title level={2}>Notion詳細ページ</Title>
-        {notionDetails?.results?.map((block: any) => (
+        <Title level={1}>
+          {notionDetails?.page?.properties?.Name?.title[0]?.text?.content || "タイトルなし"}
+        </Title>
+      </section>
+
+      {/* ブロック情報を表示 */}
+      <section>
+        {notionDetails?.blocks?.results?.map((block: any) => (
           <div key={block.id}>
-            {/* Heading 1 ブロック */}
             {block.heading_1?.rich_text?.map((text: any) => (
-              <Title level={1} key={text.text.content}>
-                {text.text.content || "データなし"}
+              <Title level={2} key={text.text?.content}>
+                {text.text?.content || "データなし"}
               </Title>
             ))}
-
-            {/* Paragraph ブロック */}
             {block.paragraph?.rich_text?.map((text: any) => (
-              <Paragraph key={text.text.content}>
-                {text.text.content || "データなし"}
+              <Paragraph key={text.text?.content}>
+                {text.text?.content || "データなし"}
               </Paragraph>
             ))}
-
-            {/* 画像を表示 */}
-            {block.image?.file?.url && (
-              <img
-                src={block.image.file.url}
-                alt="Notion Image"
-                style={{ maxWidth: "100%", height: "auto", marginBottom: "20px" }}
-              />
+            {/* 画像ブロック */}
+            {block.type === "image" && (
+              <div style={{ marginBottom: "20px" }}>
+                <img
+                  src={block.image.file?.url}
+                  alt={block.image.caption?.[0]?.plain_text || "画像"}
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
+              </div>
             )}
           </div>
         ))}
       </section>
 
-      {/* 下部のコンテンツ */}
+      {/* カードリスト */}
       <section className="flex flex-col mt-auto">
         <CardList
-          notionData={homeNotionData.map((item) => ({
+          notionData={homeNotionData.map((item: any) => ({
             ...item,
-            isActive: item.link === `/details/${id}`, // 現在の詳細ページのIDと一致するかチェック
+            isActive: item.link === `/details/${id}`,
           }))}
           openModal={openModal}
         />
       </section>
 
+      {/* モーダル */}
       <ModalComponent
         title={modalContent.title}
         text={modalContent.text}
