@@ -18,11 +18,6 @@ export default function DetailsPage() {
   const searchParams = useSearchParams(); // searchParamsフックを使用
 
   useEffect(() => {
-    // クエリパラメータからactiveButtonを取得
-    const buttonParam = searchParams.get("button");
-    if (buttonParam) {
-      setActiveButton(buttonParam); // URLパラメータに基づいてボタンの状態をセット
-    }
 
     setLoaded(true);
 
@@ -34,7 +29,7 @@ export default function DetailsPage() {
         const data = await response.json();
         const extractedData = data.results.map((item: any) => ({
           title: item.properties.Name.title[0]?.text?.content || "無題",
-          link: `/details/${item.id}?button=${activeButton}`, // 詳細ページのURLにボタンの状態を渡す
+          link: `/details/${item.id}`, // 詳細ページのURLにボタンの状態を渡す
         }));
 
         setNotionData(extractedData);
@@ -44,7 +39,7 @@ export default function DetailsPage() {
     };
 
     fetchNotionData();
-  }, [searchParams, activeButton]); // activeButtonの変更を監視
+  }, [searchParams]); // activeButtonの変更を監視
 
   const openModal = (title: string, text: string, link: string) => {
     setModalContent({ title, text, link });
@@ -58,8 +53,6 @@ export default function DetailsPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* 選択ボタンコンポーネント */}
-      <SelectionButtons activeButton={activeButton} handleButtonClick={setActiveButton} />
 
       {/* カードリストコンポーネント */}
       <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} openModal={openModal} />
@@ -72,7 +65,6 @@ export default function DetailsPage() {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         handleNavigate={handleNavigate}
-        activeButton={activeButton} // activeButtonを渡す
       />
     </main>
   );

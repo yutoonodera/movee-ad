@@ -8,7 +8,6 @@ interface ModalComponentProps {
   isModalVisible: boolean;
   setIsModalVisible: (visible: boolean) => void;
   handleNavigate: () => void;
-  activeButton: string; // activeButtonを受け取る
 }
 
 const ModalComponent: React.FC<ModalComponentProps> = ({
@@ -18,7 +17,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
   isModalVisible,
   setIsModalVisible,
   handleNavigate,
-  activeButton, // activeButtonを受け取る
 }) => {
   const handleClose = () => setIsModalVisible(false);
 
@@ -37,7 +35,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       ]}
     >
       <p>{text}</p>
-      <p>現在のボタン: {activeButton}</p> {/* activeButtonを表示 */}
     </Modal>
   );
 };

@@ -18,7 +18,6 @@ export default function CombinedPage() {
   const [detailsError, setDetailsError] = useState<string | null>(null);
   const [notionDetails, setNotionDetails] = useState<any>(null);
   const [homeNotionData, setHomeNotionData] = useState<{ title: string; link: string }[]>([]);
-  const [activeButton, setActiveButton] = useState("all");
   const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -75,11 +74,6 @@ export default function CombinedPage() {
     setIsModalVisible(false);
     router.push(modalContent.link);
   };
-
-  const handleButtonClick = (buttonName: string) => {
-    setActiveButton(buttonName);
-  };
-
   if (detailsLoading) return <Spin size="large" />;
   if (detailsError) return <Alert message={detailsError} type="error" showIcon />;
 
@@ -118,7 +112,6 @@ export default function CombinedPage() {
 
       {/* 下部のコンテンツ */}
       <section className="flex flex-col mt-auto">
-        <SelectionButtons activeButton={activeButton} handleButtonClick={handleButtonClick} />
         <CardList
           notionData={homeNotionData.map((item) => ({
             ...item,
@@ -135,7 +128,6 @@ export default function CombinedPage() {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         handleNavigate={handleNavigate}
-        activeButton={activeButton} // activeButtonを渡す
       />
     </main>
   );
