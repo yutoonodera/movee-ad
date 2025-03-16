@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // useSearchParamsをインポート
-import SelectionButtons from "./components/SelectionButtons";
 import ModalComponent from "./components/ModalComponent";
 import CardList from "./components/CardList";
 import "./globals.css";
@@ -11,7 +10,6 @@ export default function DetailsPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
   const [loaded, setLoaded] = useState(false);
-  const [activeButton, setActiveButton] = useState("all");
   const [notionData, setNotionData] = useState<{ title: string; link: string }[]>([]);
 
   const router = useRouter();
@@ -39,7 +37,7 @@ export default function DetailsPage() {
     };
 
     fetchNotionData();
-  }, [searchParams]); // activeButtonの変更を監視
+  });
 
   const openModal = (title: string, text: string, link: string) => {
     setModalContent({ title, text, link });

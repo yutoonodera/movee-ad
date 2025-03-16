@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
-import SelectionButtons from "../../components/SelectionButtons";
 import CardList from "../../components/CardList";
 import ModalComponent from "../../components/ModalComponent";
 import "../.././globals.css";
@@ -74,6 +73,7 @@ export default function CombinedPage() {
     setIsModalVisible(false);
     router.push(modalContent.link);
   };
+
   if (detailsLoading) return <Spin size="large" />;
   if (detailsError) return <Alert message={detailsError} type="error" showIcon />;
 
