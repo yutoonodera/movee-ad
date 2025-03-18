@@ -24,8 +24,7 @@ export async function generateMetadata({
   const pageTitle =
     pageData?.properties?.Name?.title?.[0]?.text?.content || "moveeブログ";
   const pageDescription =
-    pageData?.properties?.description?.rich_text?.[0]?.text?.content || "説明なし";
-
+    pageData?.properties?.description?.rich_text?.[0]?.text?.content || "株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。";
   return {
     title: pageTitle,  // 動的なタイトルを設定
     description: pageDescription,  // description
