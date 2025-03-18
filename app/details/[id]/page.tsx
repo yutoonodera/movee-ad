@@ -1,12 +1,14 @@
-"use client";
+// app/details/[id]/page.tsx
 
-import useSWR from "swr"; // SWRライブラリをインポート
-import { useRouter, useParams } from "next/navigation";
+"use client";  // クライアントサイドで動作させるためのディレクティブを追加
+
+import React, { useEffect, useState } from "react";
+import useSWR from "swr";
+import { useParams, useRouter } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
 import ModalComponent from "../../components/ModalComponent";
-import "../.././globals.css";
-import { useEffect, useState } from "react";
+import "../../globals.css";
 
 const { Title, Paragraph } = Typography;
 
@@ -36,7 +38,7 @@ export default function CombinedPage() {
 
         const data = await response.json();
         const extractedData = data.results.map((item: any) => ({
-          title: item.properties.Name?.title[0]?.text?.content || "無題",
+          title: item.properties.Name?.title[0]?.text?.content || "株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。",
           link: `/details/${item.id}`,
         }));
 
