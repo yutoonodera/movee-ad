@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
 import ModalComponent from "../../components/ModalComponent";
+import OGPCard from "../../components/OGPCard";
 import "../../globals.css";
 
 const { Title, Paragraph } = Typography;
@@ -79,14 +80,23 @@ export default function CombinedPage() {
           <div key={block.id}>
             {block.heading_1?.rich_text?.map((text: any) => (
               <Title level={2} key={text.text?.content}>
-                {text.text?.content || "データなし"}
+                {text.text?.content }
               </Title>
             ))}
             {block.paragraph?.rich_text?.map((text: any) => (
               <Paragraph key={text.text?.content}>
-                {text.text?.content || "データなし"}
+                {text.text?.content }
               </Paragraph>
             ))}
+            {block.paragraph?.rich_text?.map((text: any) => {
+  const url = text.href;
+  return url ? (
+    <OGPCard key={text.text?.content} url={url} />
+  ) : (
+    <Paragraph key={text.text?.content}></Paragraph>
+  );
+})}
+
             {/* 画像ブロック */}
             {block.type === "image" && (
               <div style={{ marginBottom: "20px" }}>
