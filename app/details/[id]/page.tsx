@@ -78,24 +78,27 @@ export default function CombinedPage() {
       <section>
         {notionDetails?.blocks?.results?.map((block: any) => (
           <div key={block.id}>
+            {/* H1ブロック */}
             {block.heading_1?.rich_text?.map((text: any) => (
               <Title level={2} key={text.text?.content}>
                 {text.text?.content }
               </Title>
             ))}
+            {/* テキストブロック */}
             {block.paragraph?.rich_text?.map((text: any) => (
               <Paragraph key={text.text?.content}>
                 {text.text?.content }
               </Paragraph>
             ))}
+            {/* URLブロック */}
             {block.paragraph?.rich_text?.map((text: any) => {
-  const url = text.href;
-  return url ? (
-    <OGPCard key={text.text?.content} url={url} />
-  ) : (
-    <Paragraph key={text.text?.content}></Paragraph>
-  );
-})}
+              const url = text.href;
+              return url ? (
+                <OGPCard key={text.text?.content} url={url} />
+              ) : (
+                <Paragraph key={text.text?.content}></Paragraph>
+              );
+            })}
 
             {/* 画像ブロック */}
             {block.type === "image" && (
