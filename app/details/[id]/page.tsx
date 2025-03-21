@@ -38,6 +38,7 @@ export default function CombinedPage() {
         if (!response.ok) throw new Error("Failed to fetch Notion data");
 
         const data = await response.json();
+        console.log(data);
         const extractedData = data.results.map((item: any) => ({
           title: item.properties.Name?.title[0]?.text?.content || "株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。",
           link: `/details/${item.id}`,

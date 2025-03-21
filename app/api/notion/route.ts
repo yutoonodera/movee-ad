@@ -11,7 +11,14 @@ export async function POST() {
         "Content-Type": "application/json",
         "Notion-Version": "2022-06-28",
       },
-      body: JSON.stringify({})
+      body: JSON.stringify({
+        sorts: [
+          {
+            timestamp: "last_edited_time", // ここを timestamp にする
+            direction: "descending" // 降順（最新が上）
+          }
+        ]
+      })
     });
 
     if (!response.ok) {
@@ -19,6 +26,7 @@ export async function POST() {
     }
 
     const data = await response.json();
+console.log(data);
     return NextResponse.json(data);
 } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -3,7 +3,7 @@ import { Card } from "antd";
 import { CoffeeOutlined, HomeOutlined } from "@ant-design/icons"; // アイコンをインポート
 
 interface CardListProps {
-  notionData: { title: string; link: string; isActive: boolean }[];
+  notionData: { title: string; updateUser: String, lastEditBy: String, link: string; isActive: boolean }[];
   openModal: (title: string, text: string, link: string) => void;
 }
 
@@ -27,8 +27,8 @@ const CardList: React.FC<CardListProps> = ({ notionData, openModal }) => {
             {/* 他のアイコンを追加したい場合は、以下のように記述 */}
             {/* <HomeOutlined style={{ fontSize: "48px", color: "#1890ff" }} /> */}
           </div>
-          <div className="flex justify-center items-center">onody</div>
-          <div className="flex justify-center items-center">3時間前</div>
+          <div className="flex justify-center items-center">{item.updateUser}</div>
+          <div className="flex justify-center items-center">{item.lastEditBy}</div>
         </Card>
       ))}
     </div>
