@@ -17,7 +17,13 @@ export async function POST() {
             timestamp: "last_edited_time", // ここを timestamp にする
             direction: "descending" // 降順（最新が上）
           }
-        ]
+        ],
+        filter: {
+          property: "open", // Notionのチェックボックスプロパティ名
+          checkbox: {
+            equals: true // チェックが入っているもののみ取得
+          }
+        }
       })
     });
 
