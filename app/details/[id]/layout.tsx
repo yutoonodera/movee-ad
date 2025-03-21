@@ -21,6 +21,7 @@ export async function generateMetadata({
   }
 
   const pageData = await res.json();
+  console.log(pageData);
   const pageTitle =
     pageData?.properties?.Name?.title?.[0]?.text?.content || "moveeブログ";
   const pageDescription =
