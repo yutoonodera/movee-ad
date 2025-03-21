@@ -69,7 +69,7 @@ export default function DetailsPage() {
     };
 
     fetchNotionData();
-  });
+}, []); // 空の配列を指定して再レンダリング時の実行を防ぐ
 
   const openModal = (title: string, text: string, link: string) => {
     setModalContent({ title, text, link });
