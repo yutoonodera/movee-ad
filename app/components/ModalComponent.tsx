@@ -23,7 +23,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
   return (
     <Modal
       title={title}
-      visible={isModalVisible}
+      open={isModalVisible}
       onCancel={handleClose}
       footer={[
         <Button key="back" onClick={handleClose}>
