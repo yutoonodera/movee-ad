@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // useSearchParamsをインポート
-import ModalComponent from "./components/ModalComponent";
 import CardList from "./components/CardList";
 import "./globals.css";
 
 export default function DetailsPage() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
   const [loaded, setLoaded] = useState(false);
   const [notionData, setNotionData] = useState<{ title: string; updateUser: string; lastEditBy: String; link: string }[]>([]);
 
@@ -16,7 +13,6 @@ export default function DetailsPage() {
   const searchParams = useSearchParams(); // searchParamsフックを使用
 
   useEffect(() => {
-
     setLoaded(true);
 
     const fetchNotionData = async () => {
@@ -69,33 +65,16 @@ export default function DetailsPage() {
     };
 
     fetchNotionData();
-}, []); // 空の配列を指定して再レンダリング時の実行を防ぐ
+  }, []); // 空の配列を指定して再レンダリング時の実行を防ぐ
 
-  const openModal = (title: string, text: string, link: string) => {
-    setModalContent({ title, text, link });
-    setIsModalVisible(true);
-  };
-
-  const handleNavigate = () => {
-    setIsModalVisible(false);
-    router.push(modalContent.link);
+  const handleCardClick = (link: string) => {
+    router.push(link);
   };
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
-
       {/* カードリストコンポーネント */}
-      <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} openModal={openModal} />
-
-      {/* モーダルコンポーネント */}
-      <ModalComponent
-        title={modalContent.title}
-        text={modalContent.text}
-        link={modalContent.link}
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        handleNavigate={handleNavigate}
-      />
+      <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} onCardClick={handleCardClick} />
     </main>
   );
 }

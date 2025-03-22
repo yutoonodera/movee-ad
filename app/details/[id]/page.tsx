@@ -1,5 +1,3 @@
-// app/details/[id]/page.tsx
-
 "use client";  // クライアントサイドで動作させるためのディレクティブを追加
 
 import React, { useEffect, useState } from "react";
@@ -7,7 +5,6 @@ import useSWR from "swr";
 import { useParams, useRouter } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
-import ModalComponent from "../../components/ModalComponent";
 import OGPCard from "../../components/OGPCard";
 import "../../globals.css";
 
@@ -27,8 +24,6 @@ export default function CombinedPage() {
   );
 
   const [homeNotionData, setHomeNotionData] = useState<{ title: string; link: string }[]>([]);
-  const [modalContent, setModalContent] = useState({ title: "", text: "", link: "" });
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // カードリストデータを取得
   useEffect(() => {
@@ -82,14 +77,8 @@ export default function CombinedPage() {
     fetchHomeData();
   }, []);
 
-  const openModal = (title: string, text: string, link: string) => {
-    setModalContent({ title, text, link });
-    setIsModalVisible(true);
-  };
-
-  const handleNavigate = () => {
-    setIsModalVisible(false);
-    router.push(modalContent.link);
+  const handleNavigate = (link: string) => {
+    router.push(link);
   };
 
   if (isLoading) return <Spin size="large" />;
@@ -151,19 +140,9 @@ export default function CombinedPage() {
             ...item,
             isActive: item.link === `/details/${id}`,
           }))}
-          openModal={openModal}
+          onCardClick={handleNavigate}
         />
       </section>
-
-      {/* モーダル */}
-      <ModalComponent
-        title={modalContent.title}
-        text={modalContent.text}
-        link={modalContent.link}
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        handleNavigate={handleNavigate}
-      />
     </main>
   );
 }
