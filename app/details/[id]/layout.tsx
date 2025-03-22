@@ -34,7 +34,7 @@ export async function generateMetadata({
         description: pageDescription,
         images:[
             {
-                url: "https://placehold.jp/1200x630.png", // Replace with the actual URL of the image
+                url: "/images/default.png",
                 width: 1200,
                 height: 630,
                 alt: pageTitle,
