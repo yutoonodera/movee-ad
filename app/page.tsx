@@ -82,7 +82,7 @@ export default function DetailsPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
 
       {/* カードリストコンポーネント */}
       <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} openModal={openModal} />
