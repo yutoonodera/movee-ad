@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // useSearchParamsをインポート
 import CardList from "./components/CardList";
 import "./globals.css";
+import * as Constants from './constants'
 
 export default function DetailsPage() {
   const [loaded, setLoaded] = useState(false);
@@ -52,8 +53,8 @@ export default function DetailsPage() {
         };
 
         const extractedData = data.results.map((item: any) => ({
-          title: item.properties.Name.title[0]?.text?.content || "無題",
-          updateUser: item.properties.updatedUser?.last_edited_by?.name || "不明なユーザー",
+          title: item.properties.Name.title[0]?.text?.content || Constants.TITLE,
+          updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatLastEditedTime(item.last_edited_time), // JSTで処理済みのテキスト
           link: `/details/${item.id}`,
         }));

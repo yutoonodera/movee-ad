@@ -1,7 +1,7 @@
 // app/details/[id]/layout.tsx
 
 import { Metadata } from "next";
-
+import * as Constants from '../../constants';
 // メタデータ生成 (サーバーサイド)
 export async function generateMetadata({
   params,
@@ -23,9 +23,9 @@ export async function generateMetadata({
   const pageData = await res.json();
   console.log(pageData);
   const pageTitle =
-    pageData?.properties?.Name?.title?.[0]?.text?.content || "moveeブログ";
+    pageData?.properties?.Name?.title?.[0]?.text?.content || Constants.TITLE;
   const pageDescription =
-    pageData?.properties?.description?.rich_text?.[0]?.text?.content || "株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。";
+    pageData?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   return {
     title: pageTitle,  // 動的なタイトルを設定
     description: pageDescription,  // description
@@ -34,9 +34,9 @@ export async function generateMetadata({
         description: pageDescription,
         images:[
             {
-                url: "/images/default.png",
-                width: 1200,
-                height: 630,
+                url: Constants.OPEN_GRAPH_IMAGE,
+                width: Constants.OPEN_GRAPH_IMAGE_WIDTH,
+                height: Constants.OPEN_GRAPH_IMAGE_HEIGHT,
                 alt: pageTitle,
             },
         ],

@@ -1,24 +1,24 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import * as Constants from './constants'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'moveeブログ',
-  description: '株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。',
+  title: Constants.TITLE,
+  description: Constants.DESCRIPTION,
   openGraph: {
-    title: 'moveeブログ',
-    description: '株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。',
+    title: Constants.TITLE,
+    description: Constants.DESCRIPTION,
     images: [
       {
-        url: '/images/default.png', // public 内のOGP画像
-        width: 1200,
-        height: 630,
-        alt: 'moveeブログ',
+        url: Constants.OPEN_GRAPH_IMAGE, // public 内のOGP画像
+        width: Constants.OPEN_GRAPH_IMAGE_WIDTH,
+        height: Constants.OPEN_GRAPH_IMAGE_HEIGHT,
+        alt: Constants.TITLE,
       },
     ],
-    type: 'website',
   },
 }
 
