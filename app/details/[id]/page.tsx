@@ -7,6 +7,7 @@ import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
 import OGPCard from "../../components/OGPCard";
 import "../../globals.css";
+import * as Constants from '../../constants'
 
 const { Title, Paragraph } = Typography;
 
@@ -62,8 +63,8 @@ export default function CombinedPage() {
         const data = await response.json();
         console.log(data);
         const extractedData = data.results.map((item: any) => ({
-          title: item.properties.Name?.title[0]?.text?.content || "株式会社moveeの公式ブログです。ソフトウェア開発に関する情報を発信しています。",
-          updateUser: item.properties.updatedUser?.last_edited_by?.name || "不明なユーザー",
+          title: item.properties.Name?.title[0]?.text?.content || Constants.TITLE,
+          updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatLastEditedTime(item.last_edited_time), // JSTで処理済みのテキスト
           link: `/details/${item.id}`,
         }));
