@@ -1,4 +1,3 @@
-// /app/details/[id]/layout.tsx
 import { Metadata } from "next";
 import * as Constants from '../../constants';
 
@@ -21,7 +20,8 @@ export async function generateMetadata({
   const pageDescription =
     notionData?.page?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   const pageIcon =
-    notionData?.page?.properties.icon?.files[0]?.file?.url || Constants.OPEN_GRAPH_IMAGE;
+    notionData?.page?.properties?.updatedUser?.last_edited_by?.avatar_url || Constants.OPEN_GRAPH_IMAGE;
+
   return {
     title: pageTitle,  // 動的なタイトルを設定
     description: pageDescription,  // description
@@ -36,6 +36,12 @@ export async function generateMetadata({
           alt: pageTitle,
         },
       ],
+    },
+    twitter: { // X（Twitter）向けのOGP設定
+      card: "summary", // 画像付きカード
+      title: pageTitle ,
+      description: pageDescription,
+      images: [pageIcon], // Twitterは配列ではなく単一URLを期待するが、Next.jsのMetadata型では配列を受け付ける
     },
   };
 }

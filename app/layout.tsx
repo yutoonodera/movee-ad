@@ -20,6 +20,12 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: { // X（Twitter）向けのOGP設定
+    card: "summary", // 画像付きカード
+    title: Constants.TITLE,
+    description: Constants.DESCRIPTION,
+    images: [Constants.OPEN_GRAPH_IMAGE], // Twitterは配列ではなく単一URLを期待するが、Next.jsのMetadata型では配列を受け付ける
+  },
 }
 
 export default function RootLayout({
