@@ -66,6 +66,7 @@ export default function CombinedPage() {
           title: item.properties.Name?.title[0]?.text?.content || Constants.TITLE,
           updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatLastEditedTime(item.last_edited_time), // JSTで処理済みのテキスト
+          icon: item.properties.icon?.files[0]?.file?.url || "", // アイコンURLを絶対URLに変換
           link: `/details/${item.id}`,
         }));
 
