@@ -29,6 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja"> {/* 日本語ページなら "ja" */}
+      <link rel="icon" href="/favicon.ico" />
       <body className={inter.className}>{children}</body>
     </html>
   )
