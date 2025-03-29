@@ -9,6 +9,7 @@ import OGPCard from "../../components/OGPCard";
 import { formatDaytoDayAgo } from "../../utils/timeFormatter";
 import "../../globals.css";
 import * as Constants from '../../constants'
+import { FINISH_GREETING } from "../../constants";
 
 const { Title, Paragraph } = Typography;
 
@@ -61,13 +62,12 @@ export default function CombinedPage() {
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
-      {/* タイトルの表示 */}
-      <section className="mb-8">
-        <Title level={1}>
-          {notionDetails?.page?.properties?.Name?.title[0]?.text?.content || "タイトルなし"}
-        </Title>
-      </section>
-
+      <Paragraph>
+      こんにちは、株式会社moveeの {notionDetails?.page?.properties?.updatedUser?.last_edited_by?.name || "moveeユーザー"}です。
+      </Paragraph>
+      <Paragraph>
+        この記事は<strong>{notionDetails?.page?.properties?.Name?.title[0]?.text?.content || "タイトルなし"}</strong>について、です。
+      </Paragraph>
       {/* ブロック情報を表示 */}
       <section>
         {notionDetails?.blocks?.results?.map((block: any) => (
@@ -107,6 +107,10 @@ export default function CombinedPage() {
           </div>
         ))}
       </section>
+      <Paragraph>
+      {FINISH_GREETING}
+      </Paragraph>
+      <h1 className="text-2xl font-bold text-center mb-6">{Constants.CATCH_COPY}</h1>
 
       {/* カードリスト */}
       <section className="flex flex-col mt-auto">
