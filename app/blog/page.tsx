@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // useSearchParamsをインポート
-import CardList from "./components/CardList";
-import { formatDaytoDayAgo } from "./utils/timeFormatter";
-import "./globals.css";
-import * as Constants from './constants'
+import CardList from "../components/CardList";
+import { formatDaytoDayAgo } from "../utils/timeFormatter";
+import "../globals.css";
+import * as Constants from '../constants'
 
 export default function DetailsPage() {
   const [loaded, setLoaded] = useState(false);
@@ -50,7 +50,6 @@ export default function DetailsPage() {
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
       {/* カードリストコンポーネント */}
-      <h1>moveeはあったらいいな、に貢献するサービスです。</h1>
       <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} onCardClick={handleCardClick} />
     </main>
   );
