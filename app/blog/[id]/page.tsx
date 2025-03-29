@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Typography, Spin, Alert } from "antd";
 import CardList from "../../components/CardList";
 import OGPCard from "../../components/OGPCard";
-import { formatDaytoDayAgo } from "../..//utils/timeFormatter";
+import { formatDaytoDayAgo } from "../../utils/timeFormatter";
 import "../../globals.css";
 import * as Constants from '../../constants'
 
@@ -40,7 +40,7 @@ export default function CombinedPage() {
           updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatDaytoDayAgo(item.last_edited_time), // JSTで処理済みのテキスト
           icon: item.properties.icon?.files[0]?.file?.url || "", // アイコンURLを絶対URLに変換
-          link: `/details/${item.id}`,
+          link: `/blog/${item.id}`,
         }));
 
         setHomeNotionData(extractedData);
@@ -113,7 +113,7 @@ export default function CombinedPage() {
         <CardList
           notionData={homeNotionData.map((item: any) => ({
             ...item,
-            isActive: item.link === `/details/${id}`,
+            isActive: item.link === `/blog/${id}`,
           }))}
           onCardClick={handleNavigate}
         />
