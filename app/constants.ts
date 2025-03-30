@@ -4,5 +4,5 @@ export const OPEN_GRAPH_IMAGE = '/images/default.png';
 export const OPEN_GRAPH_IMAGE_WIDTH = '1200';
 export const OPEN_GRAPH_IMAGE_HEIGHT = '630';
 export const MOVEE_USER = 'moveeユーザー';
-export const CATCH_COPY = 'with Open Source, with movee';
+export const CATCH_COPY = 'Web Software With Movee';
 export const FINISH_GREETING = '最後までお読みいただきありがとうございました。';
