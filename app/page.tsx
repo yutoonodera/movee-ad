@@ -6,6 +6,7 @@ import CardImpList from "./components/CardImpList";
 import { formatDaytoDayAgo } from "./utils/timeFormatter";
 import "./globals.css";
 import * as Constants from './constants'
+import { CATCH_COPY } from "./constants";
 
 export default function DetailsPage() {
   const [loaded, setLoaded] = useState(false);
@@ -49,10 +50,10 @@ export default function DetailsPage() {
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-6">with Open Source, with Movee</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">{CATCH_COPY}</h1>
 
       <section className="mb-8 p-4 bg-gray-100 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-2">オープンソース開発</h2>
+        <h2 className="text-xl font-semibold mb-2">自社ソフトウェア</h2>
         <p>自由にダウンロード・利用可能なプログラムを提供</p>
         <div className="mb-4"></div>
         <div className="space-y-2">
