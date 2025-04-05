@@ -11,7 +11,7 @@ export async function generateMetadata({
   const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`);
 
   if (!res.ok) {
-    throw new Error(`Notion API request failed: ${res.status}`);
+    console.log(`Notion API request failed: ${res.status}`);
   }
 
   const notionData = await res.json();
