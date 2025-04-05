@@ -27,10 +27,12 @@ export default function DetailsPage() {
         console.log("aaa");
         console.log(data.results);
         const extractedData = data.results.map((item: any) => ({
-          title: item.properties.Name.title[0]?.text?.content || Constants.TITLE,
+          title: item.properties.Name?.title[0]?.text?.content || Constants.TITLE,
           updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatDaytoDayAgo(item.last_edited_time),
-          icon: item.properties.icon?.files[0]?.file?.url || "",
+          icon: item.properties?.icon?.select?.name
+          ? `/images/${item.properties.icon.select.name}.png`
+          : Constants.OPEN_GRAPH_IMAGE, // アイコンURLを絶対URLに変換
           link: `/blog/${item.id}`,
         }));
         console.log("extractedData");
