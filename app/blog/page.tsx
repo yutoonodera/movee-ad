@@ -30,7 +30,9 @@ export default function DetailsPage() {
           title: item.properties.Name.title[0]?.text?.content || Constants.TITLE,
           updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatDaytoDayAgo(item.last_edited_time), // JSTで処理済みのテキスト
-          icon: item.properties.icon?.files[0]?.file?.url || "", // アイコンURLを絶対URLに変換
+          icon: item.properties?.icon?.select?.name
+          ? `/images/${item.properties.icon.select.name}.png`
+          : Constants.OPEN_GRAPH_IMAGE, // アイコンURLを絶対URLに変換
           link: `/blog/${item.id}`,
         }));
         console.log("extractedData");
