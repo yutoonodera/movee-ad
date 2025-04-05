@@ -52,8 +52,22 @@ export default function DetailsPage() {
     router.push(link);
   };
 
+  // ローディング中やエラー時に表示する
   if (isLoading) return <Spin size="large" />;
   if (error) return <Alert message="データの取得に失敗しました" type="error" showIcon />;
+
+  // notionDetailsが非公開かnullの場合にメッセージを表示
+  if (!notionDetails || !notionDetails?.page?.properties?.open?.checkbox) {
+    return (
+      <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
+        <Paragraph>申し訳ありません。この記事は削除されたか、現在非公開中のため、読むことができません。</Paragraph>
+        <Paragraph>よければ、他の記事をお楽しみください📖</Paragraph>
+        <section className="flex flex-col mt-auto">
+          <CardList notionData={notionData.map((item) => ({ ...item, isActive: item.link === `/blog/${id}` }))} onCardClick={handleNavigate} />
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
@@ -91,7 +105,7 @@ export default function DetailsPage() {
       <Paragraph>{FINISH_GREETING}</Paragraph>
       <h1 className="text-2xl font-bold text-center mb-6">{Constants.CATCH_COPY}</h1>
       <section className="flex flex-col mt-auto">
-        <CardList notionData={notionData.map((item: any) => ({ ...item, isActive: item.link === `/blog/${id}` }))} onCardClick={handleNavigate} />
+        <CardList notionData={notionData.map((item) => ({ ...item, isActive: item.link === `/blog/${id}` }))} onCardClick={handleNavigate} />
       </section>
     </main>
   );
