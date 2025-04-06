@@ -22,7 +22,7 @@ export async function generateMetadata({
   const pageDescription =
     notionData?.page?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   const iconName = notionData?.page?.properties?.icon?.select?.name;
-  const pageIcon = iconName ? `/images/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
+  const pageIcon = iconName ? `/images/eyecatch/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
   console.log('pageIcon');
   console.log(pageIcon);
   const pageTitleWithUpdateUser =
