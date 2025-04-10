@@ -41,3 +41,6 @@ next-env.d.ts
 # public
 public/data.json
 public/importantdata.json
+
+
+logs/app.log
