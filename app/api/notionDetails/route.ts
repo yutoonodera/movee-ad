@@ -39,7 +39,6 @@ export async function GET(req: Request) {
       pageResponse.json(),
       blockResponse.json(),
     ]);
-
     // ページ情報（Name）とブロック情報をまとめて返却
     return NextResponse.json({
       page: pageData,

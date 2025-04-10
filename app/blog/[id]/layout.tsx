@@ -1,5 +1,5 @@
 //メタデータはfalse種されるため、（generateMetadataの影響？）このforce-dynamicをつけることで毎回取得する
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 import { Metadata } from "next";
 import * as Constants from '../../constants';
 
@@ -9,6 +9,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  console.log("🎯 generateMetadata呼び出し", params.id); // 👈 ここ
   // /api/notionDetails からデータを取得
   const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`);
 
@@ -23,8 +24,6 @@ export async function generateMetadata({
     notionData?.page?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   const iconName = notionData?.page?.properties?.icon?.select?.name;
   const pageIcon = iconName ? `/images/eyecatch/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
-  console.log('pageIcon');
-  console.log(pageIcon);
   const pageTitleWithUpdateUser =
     pageTitle + " by " + notionData?.page?.properties?.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER;
   return {
