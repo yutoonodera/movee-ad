@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+import logger from "@/app/lib/logger";
 
 const CACHE_FILE_PATH = path.join(process.cwd(), "public", "data.json");
 const UPDATE_INTERVAL = 300000; // 5分ごとに更新
@@ -9,7 +10,7 @@ let lastUpdated = 0;
 // Notion APIからデータ取得
 async function fetchNotionData() {
   const NOTION_API_URL = `https://api.notion.com/v1/databases/${process.env.NOTION_DATABASE_ID}/query`;
-
+  logger.info("記事一覧取得API accessed.");
   try {
     const response = await fetch(NOTION_API_URL, {
       method: "POST",

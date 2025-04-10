@@ -1,4 +1,5 @@
 // /app/api/notionDetails/route.ts
+import logger from "@/app/lib/logger";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -27,7 +28,7 @@ export async function GET(req: Request) {
         },
       }),
     ]);
-
+    logger.info("記事取得API accessed.");
     if (!pageResponse.ok) {
       throw new Error(`Notion Page API request failed with status ${pageResponse.status}`);
     }

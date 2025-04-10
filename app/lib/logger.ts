@@ -1,29 +1,18 @@
+// lib/logger.ts
 import { createLogger, transports, format } from "winston";
 
-// 日本時間を取得する関数
-const getJapanTime = () => {
-  const options: Intl.DateTimeFormatOptions = {
-    timeZone: 'Asia/Tokyo',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  };
-  return new Date().toLocaleString('ja-JP', options); // 日本時間に変換
+// JST形式でタイムスタンプを生成する関数
+const jstTimestamp = () => {
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+  return jst.toISOString().replace("T", " ").replace("Z", "");
 };
 
 const logger = createLogger({
   level: "info",
   format: format.combine(
-    // カスタムタイムスタンプで日本時間を使用
-    format.timestamp({
-      format: getJapanTime
-    }),
-    format.printf(({ timestamp, level, message }) => {
-      return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+    format.printf(({ level, message }) => {
+      return `${jstTimestamp()} [${level.toUpperCase()}]: ${message}`;
     })
   ),
   transports: [
