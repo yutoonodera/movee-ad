@@ -52,7 +52,7 @@ export default function DetailsPage() {
 
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-6">{TITLE}</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">{Constants.BLOG_TITLE}</h1>
       {/* カードリストコンポーネント */}
       <CardList notionData={notionData.map(item => ({ ...item, isActive: false }))} onCardClick={handleCardClick} />
     </main>
