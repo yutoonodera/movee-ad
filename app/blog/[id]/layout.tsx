@@ -1,4 +1,3 @@
-//メタデータは
 export const revalidate = 3600;  // ページ情報をキャッシュし、1時間ごとに再取得
 import { Metadata } from "next";
 import * as Constants from '../../constants';
