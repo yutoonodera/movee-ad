@@ -37,6 +37,7 @@ next-env.d.ts
 
 #.env
 .env.local
+.env.production
 
 # public
 public/data.json
