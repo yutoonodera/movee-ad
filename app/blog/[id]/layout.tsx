@@ -12,9 +12,9 @@ export async function generateMetadata({
   logger.info("🎯 generateMetadata呼び出し", params.id);
   // /api/notionDetails からデータを取得
   const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`,
-  {
-    next: { revalidate: 3600 }  // generateMetadataは動的フェッチのため、revalidateは効かないのでgenerateMetadata内でも設定する
-  }
+    {
+      next: { revalidate: 3600 }  // generateMetadataは動的フェッチのため、revalidateは効かないのでgenerateMetadata内でも設定する
+    }
   );
 
   if (!res.ok) {
