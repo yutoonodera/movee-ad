@@ -1,5 +1,4 @@
-//メタデータはfalse種されるため、（generateMetadataの影響？）このforce-dynamicをつけることで毎回取得する
-export const revalidate = 3600;
+export const revalidate = 3600;  // ページ情報をキャッシュし、1時間ごとに再取得
 import { Metadata } from "next";
 import * as Constants from '../../constants';
 import logger from "@/app/lib/logger";
@@ -10,9 +9,13 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  logger.info("🎯 generateMetadata呼び出し", params.id); // 👈 ここ
+  logger.info("🎯 generateMetadata呼び出し", params.id);
   // /api/notionDetails からデータを取得
-  const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`);
+  const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`,
+    {
+      next: { revalidate: 3600 }  // generateMetadataは動的フェッチのため、revalidateは効かないのでgenerateMetadata内でも設定する
+    }
+  );
 
   if (!res.ok) {
     logger.info(`Notion API request failed: ${res.status}`);

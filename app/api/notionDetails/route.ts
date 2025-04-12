@@ -28,7 +28,7 @@ export async function GET(req: Request) {
         },
       }),
     ]);
-    logger.info("記事取得API accessed.");
+    logger.info("記事取得API accessed(id:" + id + ").");
     if (!pageResponse.ok) {
       throw new Error(`Notion Page API request failed with status ${pageResponse.status}`);
     }
