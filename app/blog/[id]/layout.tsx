@@ -2,6 +2,7 @@
 export const revalidate = 3600;
 import { Metadata } from "next";
 import * as Constants from '../../constants';
+import logger from "@/app/lib/logger";
 
 // メタデータ生成 (サーバーサイド)
 export async function generateMetadata({
@@ -9,12 +10,12 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  console.log("🎯 generateMetadata呼び出し", params.id); // 👈 ここ
+  logger.info("🎯 generateMetadata呼び出し", params.id); // 👈 ここ
   // /api/notionDetails からデータを取得
   const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`);
 
   if (!res.ok) {
-    console.log(`Notion API request failed: ${res.status}`);
+    logger.info(`Notion API request failed: ${res.status}`);
   }
 
   const notionData = await res.json();
