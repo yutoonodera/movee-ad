@@ -62,7 +62,7 @@ export default function DetailsPage() {
           <div>
             <strong>
               <a href="https://github.com/yutoonodera/movee-ad" target="_blank" rel="noopener noreferrer" className="inline-block px-3 py-1 bg-gray-300 text-black font-medium rounded-md shadow hover:bg-gray-400 transition">
-                ちょっとブログ
+                育てるソフトウェア
               </a>
             </strong> - React18, Next.js14, TypeScript5, node.js20, tailwindcss3
           </div>

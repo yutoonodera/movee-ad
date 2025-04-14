@@ -105,10 +105,11 @@ export default function DetailsPage() {
         ))}
       </section>
       <Paragraph>{FINISH_GREETING}</Paragraph>
-      <h1 className="text-2xl font-bold text-center mb-6">{Constants.CATCH_COPY}</h1>
+      <div className="mt-8" />
       <section className="flex flex-col mt-auto">
         <CardList notionData={notionData.map((item) => ({ ...item, isActive: item.link === `/blog/${id}` }))} onCardClick={handleNavigate} />
       </section>
+      <h1 className="text-2xl font-bold text-center mt-8 mb-6">{Constants.CATCH_COPY}</h1>
     </main>
   );
 }
