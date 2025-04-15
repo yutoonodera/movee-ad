@@ -27,7 +27,7 @@ export async function generateMetadata({
   const pageDescription =
     notionData?.page?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   const iconName = notionData?.page?.properties?.icon?.select?.name;
-  const pageIcon = iconName ? `/images/eyecatch/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
+  const pageIcon = iconName ? `${process.env.PUBLIC_BASE_URL}/images/eyecatch/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
   const pageTitleWithUpdateUser =
     pageTitle + " by " + notionData?.page?.properties?.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER;
   return {
