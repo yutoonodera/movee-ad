@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: Constants.BLOG_DESCRIPTION,
     images: [
       {
-        url: `${process.env.PUBLIC_BASE_URL}${Constants.OPEN_GRAPH_IMAGE}`, // public 内のOGP画像
+        url: new URL(Constants.OPEN_GRAPH_IMAGE, process.env.NEXT_PUBLIC_BASE_URL).toString(),
         width: Constants.OPEN_GRAPH_IMAGE_WIDTH,
         height: Constants.OPEN_GRAPH_IMAGE_HEIGHT,
         alt: Constants.BLOG_TITLE,
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary", // 画像付きカード
     title: Constants.BLOG_TITLE,
     description: Constants.BLOG_DESCRIPTION,
-    images: [`${process.env.PUBLIC_BASE_URL}${Constants.OPEN_GRAPH_IMAGE}`], // Twitterは配列ではなく単一URLを期待するが、Next.jsのMetadata型では配列を受け付ける
+    images: [`${process.env.NEXT_PUBLIC_BASE_URL}${Constants.OPEN_GRAPH_IMAGE}`], // Twitterは配列ではなく単一URLを期待するが、Next.jsのMetadata型では配列を受け付ける
   },
 };
 
