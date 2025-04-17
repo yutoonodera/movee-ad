@@ -37,8 +37,8 @@ export default function DetailsPage() {
           updateUser: item.properties.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER,
           lastEditBy: formatDaytoDayAgo(item.last_edited_time), // JSTで処理済みのテキスト
           icon: item.properties?.icon?.select?.name
-          ? `/images/eyecatch/${item.properties.icon.select.name}.png`
-          : Constants.OPEN_GRAPH_IMAGE, // アイコンURLを絶対URLに変換
+            ? `/images/eyecatch/${item.properties.icon.select.name}.png`
+            : Constants.OPEN_GRAPH_IMAGE, // アイコンURLを絶対URLに変換
           link: `/blog/${item.id}`,
         }));
         setNotionData(extractedData);
@@ -71,6 +71,60 @@ export default function DetailsPage() {
     );
   }
 
+  // renderBlock 関数を定義して、各ブロックのレンダリング処理を分ける
+  const renderBlock = (block: any) => {
+    const { type, id } = block;
+
+    const textElements = (block[type]?.rich_text || []).map((text: any, i: number) => (
+      <React.Fragment key={`${id}-text-${i}`}>
+        {text.href ? <a href={text.href}>{text.plain_text}</a> : text.plain_text}
+      </React.Fragment>
+    ));
+
+    switch (type) {
+      case "heading_1":
+        return <Title level={2} key={id}>{textElements}</Title>;
+      case "heading_2":
+        return <Title level={3} key={id}>{textElements}</Title>;
+      case "heading_3":
+        return <Title level={4} key={id}>{textElements}</Title>;
+      case "paragraph":
+        return <Paragraph key={id}>{textElements}</Paragraph>;
+      case "bulleted_list_item":
+      //numbered_list_itemは個別実装が必要なため、bulleted_list_itemとして表示
+      case "numbered_list_item":
+        return <li key={id}>{textElements}</li>;
+      case "code":
+        return (
+          <pre key={id} style={{ background: "#f5f5f5", padding: "1rem", overflowX: "auto" }}>
+            <code>{block.code?.rich_text?.map((t: any) => t.plain_text).join("")}</code>
+          </pre>
+        );
+      case "image":
+        return (
+          <div key={id} style={{ marginBottom: "20px" }}>
+            <img
+              src={block.image.file?.url || block.image.external?.url}
+              alt={block.image.caption?.[0]?.plain_text || "画像"}
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+        );
+      case "quote":
+        return (
+          <blockquote key={id} style={{ fontStyle: "italic", borderLeft: "4px solid #ccc", paddingLeft: "1rem", marginLeft: "0" }}>
+            {textElements}
+          </blockquote>
+        );
+      case "to_do":
+        return (
+          <div key={id}>
+            <input type="checkbox" checked={block.to_do?.checked} readOnly /> {textElements}
+          </div>
+        );
+    }
+  };
+
   return (
     <main className="flex flex-col justify-between min-h-screen p-6 max-w-3xl mx-auto">
       <Paragraph>
@@ -84,26 +138,9 @@ export default function DetailsPage() {
       </Paragraph>
 
       <section>
-        {notionDetails?.blocks?.results?.map((block: any) => (
-          <div key={block.id}>
-            {block.heading_1?.rich_text?.map((text: any) => (
-              <Title level={2} key={text.text?.content}>{text.text?.content}</Title>
-            ))}
-            {block.paragraph?.rich_text?.map((text: any) => (
-              <Paragraph key={text.text?.content}>{text.text?.content}</Paragraph>
-            ))}
-            {block.paragraph?.rich_text?.map((text: any) => {
-              const url = text.href;
-              return url ? <OGPCard key={text.text?.content} url={url} /> : <Paragraph key={text.text?.content}></Paragraph>;
-            })}
-            {block.type === "image" && (
-              <div style={{ marginBottom: "20px" }}>
-                <img src={block.image.file?.url} alt={block.image.caption?.[0]?.plain_text || "画像"} style={{ maxWidth: "100%", height: "auto" }} />
-              </div>
-            )}
-          </div>
-        ))}
+        {notionDetails?.blocks?.results?.map((block: any) => renderBlock(block))}
       </section>
+
       <Paragraph>{FINISH_GREETING}</Paragraph>
       <div className="mt-8" />
       <section className="flex flex-col mt-auto">
