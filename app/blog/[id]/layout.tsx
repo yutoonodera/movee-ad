@@ -11,7 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   logger.info("🎯 generateMetadata呼び出し", params.id);
   // /api/notionDetails からデータを取得
-  const res = await fetch(`${process.env.PUBLIC_BASE_URL}/api/notionDetails?id=${params.id}`,
+  const res = await fetch(`${process.env.BASE_URL}/api/notionDetails?id=${params.id}`,
     {
       next: { revalidate: 3600 }  // generateMetadataは動的フェッチのため、revalidateは効かないのでgenerateMetadata内でも設定する
     }
@@ -27,7 +27,10 @@ export async function generateMetadata({
   const pageDescription =
     notionData?.page?.properties?.description?.rich_text?.[0]?.text?.content || Constants.DESCRIPTION;
   const iconName = notionData?.page?.properties?.icon?.select?.name;
-  const pageIcon = iconName ? `${process.env.PUBLIC_BASE_URL}/images/eyecatch/${iconName}.png` : Constants.OPEN_GRAPH_IMAGE;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const pageIcon = iconName
+  ? new URL(`/images/eyecatch/${iconName}.png`, baseUrl).toString()
+  : new URL(Constants.OPEN_GRAPH_IMAGE, baseUrl).toString();
   const pageTitleWithUpdateUser =
     pageTitle + " by " + notionData?.page?.properties?.updatedUser?.last_edited_by?.name || Constants.MOVEE_USER;
   return {
