@@ -134,7 +134,7 @@ export default function DetailsPage() {
         こんにちは、株式会社moveeの {notionDetails?.page?.properties?.updatedUser?.last_edited_by?.name || "moveeユーザー"}です。
       </Paragraph>
       <Paragraph>
-        この記事は<strong>{notionDetails?.page?.properties?.Name?.title[0]?.text?.content || "タイトルなし"}</strong>について、です。
+        このページは<strong>{notionDetails?.page?.properties?.Name?.title[0]?.text?.content || "タイトルなし"}</strong>について、です。
       </Paragraph>
 
       <section>
